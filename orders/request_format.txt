@@ -1,0 +1,30 @@
+{
+  "_comment": "Upstream Order",
+  "aggregatorId": "int",
+  "aggregatorOrderId": "long_int",
+  "timeStamp": "epoch",
+  "price": "decimal",
+  "storeId": "int",
+  "items": [
+    {
+      "itemId": "int",
+      "quantity": "int",
+      "addOns": [
+        {
+          "itemId": "int",
+          "quantity": "int"
+        }
+      ]
+    }
+  ]
+}
+
+
+
+{
+  "_comment": "Downstream Order",
+  "orderId": "long_int",
+  "aggregatorPayload": {
+           ...
+  }
+}
