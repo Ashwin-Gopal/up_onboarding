@@ -1,13 +1,13 @@
 import structlog
 
 from django.urls import path
-from tastypie import fields
 from tastypie.exceptions import BadRequest
 from tastypie.resources import ModelResource
 
 from orders.models import Order
 from orders.tasks import process_upstream_order
 from utils.generate_order import produce_order
+from utils.tasks import notify_store
 
 logging = structlog.getLogger(__name__)
 
@@ -43,6 +43,8 @@ class OrderResource(ModelResource):
         if aggregator_id and aggregator_order_id:
             logging.info("Processing order")
             process_upstream_order.delay(data)
+            logging.info("Notifying Store")
+            notify_store.delay(data.get('storeId'))
         else:
             logging.error("Bad Request: Aggregator and aggregator info not sent")
             raise BadRequest("Aggregator and aggregator info not sent")

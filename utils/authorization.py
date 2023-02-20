@@ -74,6 +74,15 @@ class MerchantAuthorization(DjangoAuthorization):
         """
         return has_permission('edit_merchant', bundle.request)
 
+    def update_detail(self, object_list, bundle):
+        """
+        Permission to check if user can update merchant
+        :param object_list:
+        :param bundle:
+        :return:
+        """
+        return has_permission('edit_merchant', bundle.request)
+
 
 class StoreAuthorization(DjangoAuthorization):
 
