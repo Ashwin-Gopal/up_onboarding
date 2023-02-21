@@ -6,7 +6,7 @@ from celery.utils.log import get_task_logger
 from inventory.models import Aggregator, Store, StoreItemPrice
 from onboarding.celery import app
 
-logger = get_task_logger(__name__)
+logger = get_task_logger('onboarding')
 
 r = redis.Redis()
 
