@@ -5,7 +5,7 @@ from tastypie.authorization import Authorization
 from tastypie.constants import ALL
 from users.api.resources import OnboardingUserResource
 from utils.authentication import TokenAuthentication
-from utils.authorization import MerchantAuthorization, StoreAuthorization
+from utils.authorization import BasePermissionAuthorization, StoreAuthorization
 
 
 class MerchantResource(ModelResource):
@@ -17,7 +17,12 @@ class MerchantResource(ModelResource):
         resource_name = 'merchants'
         allowed_methods = ['get', 'post', 'patch', 'delete']
         authentication = TokenAuthentication()
-        authorization = MerchantAuthorization()
+        authorization = BasePermissionAuthorization(
+            list_permission='list_merchants',
+            create_permission='add_merchant',
+            edit_permission='edit_merchant',
+            detail_permission='view_merchant'
+        )
         get_excludes = ('created_on', 'updated_on')
 
 
@@ -30,7 +35,12 @@ class StoreResource(ModelResource):
         resource_name = 'stores'
         allowed_methods = ['get', 'post', 'patch', 'delete']
         authentication = TokenAuthentication()
-        authorization = StoreAuthorization()
+        authorization = StoreAuthorization(
+            list_permission='list_stores',
+            create_permission='add_store',
+            edit_permission='edit_store',
+            detail_permission='view_store'
+        )
         filtering = {
             "name": ALL,
         }

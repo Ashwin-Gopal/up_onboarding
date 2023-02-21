@@ -23,16 +23,22 @@ def has_permission(code_name, request):
     return True
 
 
-class MerchantAuthorization(DjangoAuthorization):
+class BasePermissionAuthorization(DjangoAuthorization):
+
+    def __init__(self, create_permission, list_permission, detail_permission, edit_permission):
+        self.create = create_permission
+        self.list = list_permission
+        self.detail = detail_permission
+        self.edit = edit_permission
 
     def create_detail(self, object_list, bundle):
         """
-        Permission to check if user can add merchant
+        Permission to check if user can add object
         :param object_list:
         :param bundle:
         :return:
         """
-        return has_permission('add_merchant', bundle.request)
+        return has_permission(self.create, bundle.request)
 
     def read_list(self, object_list, bundle):
         """
@@ -41,97 +47,59 @@ class MerchantAuthorization(DjangoAuthorization):
         :param bundle:
         :return:
         """
-        return object_list
+        return object_list if has_permission(self.list, bundle.request) else object_list.none()
 
     def read_detail(self, object_list, bundle):
         """
-        Permission to check if user has view merchant details
+        Permission to check if user has view object details
         :param object_list:
         :param bundle:
         :return:
         """
-        return has_permission('view_merchant', bundle.request)
+        return has_permission(self.detail, bundle.request)
 
     def delete_list(self, object_list, bundle):
         """
-        Permission to check if user can delete merchant list
+        Permission to check if user can delete object list
         :param object_list:
         :param bundle:
         :return:
         """
-        has_permission('edit_merchant', bundle.request)
-        return object_list
+        return object_list if has_permission(self.edit, bundle.request) else object_list.none()
 
     def delete_detail(self, object_list, bundle):
         """
-        Permission to check if user can delete merchant
+        Permission to check if user can delete object
         :param object_list:
         :param bundle:
         :return:
         """
-        return has_permission('edit_merchant', bundle.request)
+        return has_permission(self.edit, bundle.request)
 
     def update_detail(self, object_list, bundle):
         """
-        Permission to check if user can update merchant
+        Permission to check if user can update object
         :param object_list:
         :param bundle:
         :return:
         """
-        return has_permission('edit_merchant', bundle.request)
+        return has_permission(self.edit, bundle.request)
 
-
-class StoreAuthorization(DjangoAuthorization):
-
-    def create_detail(self, object_list, bundle):
+    def update_list(self, object_list, bundle):
         """
-        Permission to check if user can add store
+        Permission to check if user can update object list
         :param object_list:
         :param bundle:
         :return:
         """
-        return has_permission('add_store', bundle.request)
+        return object_list if has_permission(self.edit, bundle.request) else object_list.none()
 
-    def read_list(self, object_list, bundle):
-        """
-        Method to return the Model object list.
-        :param object_list:
-        :param bundle:
-        :return:
-        """
-        return object_list
 
-    def read_detail(self, object_list, bundle):
-        """
-        Permission to check if user has view store details
-        :param object_list:
-        :param bundle:
-        :return:
-        """
-        return has_permission('view_store', bundle.request)
-
-    def delete_list(self, object_list, bundle):
-        """
-        Permission to check if user can delete store list
-        :param object_list:
-        :param bundle:
-        :return:
-        """
-        has_permission('edit_store', bundle.request)
-        return object_list
-
-    def delete_detail(self, object_list, bundle):
-        """
-        Permission to check if user can delete store
-        :param object_list:
-        :param bundle:
-        :return:
-        """
-        return has_permission('edit_store', bundle.request)
+class StoreAuthorization(BasePermissionAuthorization):
 
     def update_detail(self, object_list, bundle):
         """
-        Permission to check if user can delete store
+        Permission to check if user can update store
         :param object_list:
         :param bundle:
         :return:
