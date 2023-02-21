@@ -1,6 +1,13 @@
+# env files
 .env
 
+# bin, pyc files
 bin/
 __pycache__/
 .idea/
+
+# logs
 *.log
+
+# celery beat binary file
+celerybeat-schedule
