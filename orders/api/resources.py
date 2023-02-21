@@ -41,9 +41,9 @@ class OrderResource(ModelResource):
         aggregator_id = data.get('aggregatorId')
         aggregator_order_id = data.get('aggregatorOrderId')
         if aggregator_id and aggregator_order_id:
-            logging.info("Processing order")
+            logging.info("Processing order {id}".format(id=aggregator_order_id))
             process_upstream_order.delay(data)
-            logging.info("Notifying Store")
+            logging.info("Notifying Store about order {id}".format(id=aggregator_order_id))
             notify_store.delay(data.get('storeId'))
         else:
             logging.error("Bad Request: Aggregator and aggregator info not sent")

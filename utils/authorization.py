@@ -1,11 +1,8 @@
-import json
-
-import ipdb
-from tastypie.authorization import Authorization, DjangoAuthorization
-from tastypie.exceptions import Unauthorized
 from django.contrib.auth.models import Group
+from tastypie.authorization import DjangoAuthorization
+from tastypie.exceptions import Unauthorized
 
-from inventory.models import Merchant, Store
+from inventory.models import Store
 
 
 def has_permission(code_name, request):
