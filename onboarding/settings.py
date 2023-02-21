@@ -20,10 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '12ia0dwj2%ag*o(v_7@oag8$+oy%xry9%+p$qwecep64w%xn&l'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+ENV_DEBUG = os.environ.get('DEBUG', 'false').lower()
+DEBUG = True if ENV_DEBUG == 'true' else False
 
 ALLOWED_HOSTS = ['*']
 
@@ -85,11 +86,11 @@ WSGI_APPLICATION = 'onboarding.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onboardinglocal',
-        'USER': 'urbanpiper',
-        'PASSWORD': 'urbanpiper',
-        'HOST': '',
-        'PORT': '',
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST', ''),
+        'PORT': os.environ.get('DB_PORT', ''),
     }
 }
 
@@ -199,7 +200,7 @@ structlog.configure(
 )
 
 
-CELERY_BROKER_URL = "amqp://urbanpiper:urbanpiper@localhost:5672/myvhost"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
 
 SILKY_PYTHON_PROFILER = True
