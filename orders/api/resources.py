@@ -7,9 +7,8 @@ from tastypie.resources import ModelResource
 from orders.models import Order
 from orders.tasks import process_upstream_order
 from utils.generate_order import produce_order
-from utils.tasks import notify_store
 
-logging = structlog.getLogger(__name__)
+logging = structlog.getLogger('onboarding')
 
 
 class OrderResource(ModelResource):
@@ -24,7 +23,6 @@ class OrderResource(ModelResource):
         """
         return [
             path("orders/upstream/", self.wrap_view('process_upstream_order'), name='upstream-order'),
-            path("orders/downstream/", self.wrap_view('process_downstream_order'), name='downstream-order'),
         ]
 
     def process_upstream_order(self, request, **kwargs):
@@ -43,8 +41,6 @@ class OrderResource(ModelResource):
         if aggregator_id and aggregator_order_id:
             logging.info("Processing order {id}".format(id=aggregator_order_id))
             process_upstream_order.delay(data)
-            logging.info("Notifying Store about order {id}".format(id=aggregator_order_id))
-            notify_store.delay(data.get('storeId'))
         else:
             logging.error("Bad Request: Aggregator and aggregator info not sent")
             raise BadRequest("Aggregator and aggregator info not sent")

@@ -6,6 +6,7 @@ from django.db import transaction
 
 from onboarding.celery import app
 from orders.models import Order, OrderItem
+from utils.tasks import notify_store
 
 logger = get_task_logger('onboarding')
 
@@ -41,12 +42,21 @@ def process_upstream_order(payload):
 
         OrderItem.objects.bulk_create(order_items)
     except Exception as e:
+        logger.error(
+            "Task Id: {task_id}. Processing Order failed with agg {agg_id} and agg_order {agg_order_id}.".format(
+                agg_id=payload.get('aggregatorId'), agg_order_id=payload.get('aggregatorOrderId'),
+                task_id=process_upstream_order.request.id))
         transaction.savepoint_rollback(save_point)
-        logger.error("Processing Order failed with agg {agg_id} and agg_order {agg_order_id}".format(
-            agg_id=payload.get('aggregatorId'), agg_order_id=payload.get('aggregatorOrderId')))
 
-    logger.info("Order processed : {order}".format(order=json.dumps({
-        'agg': payload.get('aggregatorId'),
-        'agg_order': payload.get('aggregatorOrderId'),
-        'system_order': system_order_id
-    })))
+    logger.info("Notifying Store about order {id}".format(id=payload.get('aggregatorOrderId')))
+
+    notify_store.delay(payload.get('storeId'))
+
+    logger.info("Task Id: {task_id}. Order processed : {order}".format(
+        order=json.dumps({
+            'agg': payload.get('aggregatorId'),
+            'agg_order': payload.get('aggregatorOrderId'),
+            'system_order': system_order_id}),
+        task_id=process_upstream_order.request.id
+    )
+    )

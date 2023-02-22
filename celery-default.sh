@@ -1,1 +1,4 @@
- python -m celery -A onboarding worker -l info
+#!/bin/bash
+
+source .env
+python -m celery -A onboarding worker -l info
