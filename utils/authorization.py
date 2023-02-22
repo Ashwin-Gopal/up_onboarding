@@ -17,7 +17,7 @@ def has_permission(code_name, request):
     group = Group.objects.get(name=request_user_role.name)
 
     # now we check here for specific permission
-    if code_name not in group.permissions.all().values_list('codename', flat=True):
+    if not group.permissions.filter(codename=code_name).exists():
         raise Unauthorized("You are not allowed to access that resource.")
 
     return True
