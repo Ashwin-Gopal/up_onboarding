@@ -1,8 +1,7 @@
 from locust import HttpUser, task
 
 
-class HelloWorldUser(HttpUser):
+class LocustTestUser(HttpUser):
     @task
-    def hello_world(self):
+    def upstream_order(self):
         self.client.post("/api/v1/orders/upstream/", json={})
-

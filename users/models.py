@@ -61,7 +61,8 @@ class UserToken(CustomDateTime):
 
         return super(UserToken, self).save(*args, **kwargs)
 
-    def generate_token(self):
+    @staticmethod
+    def generate_token():
         """
         Method to generate token
         :return:

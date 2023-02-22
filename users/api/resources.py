@@ -47,7 +47,8 @@ class OnboardingUserResource(ModelResource):
             path("onboarding-users/logout/", self.wrap_view('logout'), name='logout-user'),
         ]
 
-    def get_token(self, user):
+    @staticmethod
+    def get_token(user):
         """
         Method to fetch session token
         :param user:
