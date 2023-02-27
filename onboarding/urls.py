@@ -20,7 +20,8 @@ from tastypie.api import Api
 
 from orders.api.resources import OrderResource
 from users.api.resources import OnboardingUserResource, RoleResource
-from inventory.api.resources import MerchantResource, ItemCategoryResource
+from inventory.api.resources import MerchantResource, ItemCategoryResource, StoreResource, ItemResource, \
+    AggregatorResource, StoreItemPriceResource
 
 v1_api = Api(api_name='v1')
 v1_api.register(OnboardingUserResource())
@@ -28,6 +29,10 @@ v1_api.register(RoleResource())
 v1_api.register(MerchantResource())
 v1_api.register(ItemCategoryResource())
 v1_api.register(OrderResource())
+v1_api.register(StoreResource())
+v1_api.register(ItemResource())
+v1_api.register(AggregatorResource())
+v1_api.register(StoreItemPriceResource())
 
 
 urlpatterns = [

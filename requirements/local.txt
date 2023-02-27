@@ -2,6 +2,7 @@ amqp==5.1.1
 asgiref==3.6.0
 asttokens==2.2.1
 async-timeout==4.0.2
+autopep8==2.0.1
 backcall==0.2.0
 billiard==3.6.4.0
 Brotli==1.0.9
@@ -18,7 +19,8 @@ Django==4.1.6
 django-extensions==3.2.1
 django-ipware==4.0.2
 django-shell-plus==1.1.7
-django-structlog[celery]==4.1.1
+django-silk==5.0.3
+django-structlog==4.1.1
 django-tastypie==0.14.5
 executing==1.2.0
 Faker==16.8.1
@@ -28,6 +30,7 @@ Flask-Cors==3.0.10
 flower==1.2.0
 gevent==22.10.2
 geventhttpclient==2.0.8
+gprof2dot==2022.7.29
 greenlet==2.0.2
 humanize==4.6.0
 idna==3.4
@@ -50,6 +53,7 @@ prompt-toolkit==3.0.36
 psutil==5.9.4
 ptyprocess==0.7.0
 pure-eval==0.2.2
+pycodestyle==2.10.0
 Pygments==2.14.0
 python-dateutil==2.8.2
 python-mimeparse==1.6.0

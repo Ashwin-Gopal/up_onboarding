@@ -31,7 +31,7 @@ class OnboardingUserResource(ModelResource):
     class Meta:
         queryset = OnboardingUser.objects.all()
         resource_name = 'onboarding-users'
-        fields = ['id', 'first_name']
+        fields = ['id', 'first_name', 'username']
         allowed_methods = ['get', 'patch', 'delete']
         authorization = Authorization()
         authentication = TokenAuthentication()
